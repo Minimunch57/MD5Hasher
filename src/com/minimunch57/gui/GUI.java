@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -99,11 +101,32 @@ public class GUI extends JFrame {
 		
 		btnHash = new JButton("Hash!");
 		btnHash.addActionListener((actionEvent) -> {
-			try {
-				textArea.setText(hashMD5(textArea.getText()));
-			} catch (NoSuchAlgorithmException nsae) {
-				nsae.printStackTrace();
-			}
+			// Use a SwingWorker to separate code on and off the event dispatch thread (EDT).
+			new SwingWorker<String, Void>() {
+				@Override
+				public String doInBackground() {
+					// Hash in the background (Not on the EDT).
+					String hashedResult = "";
+					try {
+						hashedResult = hashMD5(textArea.getText());
+					} catch (NoSuchAlgorithmException nsae) {
+						nsae.printStackTrace();
+					}
+					return hashedResult;
+				}
+				
+				@Override
+				public void done() {
+					// Update the text area on the EDT.
+					try {
+						textArea.setText(get());
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					} catch (ExecutionException ee) {
+						ee.printStackTrace();
+					}
+				}
+			}.execute();
 		});
 		btnHash.setFont(new Font("Arial", Font.BOLD, 35));
 		btnHash.setToolTipText("Hash what is in the text box.");
@@ -129,8 +152,8 @@ public class GUI extends JFrame {
 	 * </ul>
 	 */
 	private String hashMD5(String input) throws NoSuchAlgorithmException {
-	    final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-	    final byte[] digest = messageDigest.digest(input.getBytes(StandardCharsets.UTF_8));
+		final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+		final byte[] digest = messageDigest.digest(input.getBytes(StandardCharsets.UTF_8));
 		return String.format("%032x", new BigInteger(1, digest));
 	}
 }

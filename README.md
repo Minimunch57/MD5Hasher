@@ -36,7 +36,7 @@ The application is incredibly basic, so it is snappy and consumes very little sy
 
 ### ℹ️ Additional Information
 This project was originally created over a year prior to being released to this repository.
-It has been publicized, open-sourced, and licensed under  __Apache 2.0__ .
+It has been publicized and open-sourced under the  __Apache 2.0__  license.
 The code in this repository is basic, and anyone may use, modify, or expand upon it.
 
 The application was designed and tested on Windows systems, but it likely works on other operating systems with Java 11 or later.
