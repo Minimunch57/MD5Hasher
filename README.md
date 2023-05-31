@@ -7,7 +7,7 @@
     A simple Java application that takes text and outputs its MD5 hash.
     <br><br>
     <img src="https://img.shields.io/badge/designed for-windows-blue?style=flat&logo=windows" alt="Designed for and Tested on Windows">
-    <img src="https://img.shields.io/badge/version-1.0-blue" alt="MD5 Hasher v1.0">
+    <img src="https://img.shields.io/badge/version-1.1-blue" alt="MD5 Hasher v1.1">
     <img src="https://img.shields.io/badge/language-java-F58219?logo=oracle" alt="Written in Java 11">
     <a target="_blank" href="https://github.com/Minimunch57/MD5Hasher/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-yellow" alt="Apache License v2.0"></a>
 </p>
